@@ -1,37 +1,5 @@
-## Welcome to GitHub Pages
+## About Me
 
-You can use the [editor on GitHub](https://github.com/adilpeerbhoy/adilpeerbhoy.github.io/edit/master/index.md) to maintain and preview the content for your website in Markdown files.
+Completing my computer science degree at Southern New Hampshire University has given me the knowledge and skillsets that employers are looking for. I have explored a number of different software languages, operating systems, and analysis tools that make me a well-rounded candidate for employment. In addition to hard skills of coding and project development, I have worked on assignments which taught me soft skills. One example of this is a data analysis project for the Bubba Gump Shrimp Factory, where I created a report for the company’s stakeholders which analyzed their current sales across various departments (restaurants, merch, etc) and found ways for them to improve those figures in the coming years. This assignment not only taught me the use of JMP programming and of data analysis methodologies, but how to craft a proper presentation. Working on other coding projects also gave me a basic understanding of both the language and the underlying data structures involved. I have learned several database languages, have learned about Windows and Linux operating systems, and have a solid understanding of the different components of a PC. The various projects I completed were designed around tasks that would be conducted in the workplace, each providing an opportunity to not only develop the software and design skills but also written and oratory ones. Outside of the coursework, I have participated in cybersecurity CTF challenges in order to learn more about the field. This has allowed me to gain a better understanding of cybersecurity as a whole and the skills required to make a career out of it. The self-study nature of the coursework at SNHU has trained me to be disciplined and to seek out the answer from various sources whenever I have any issues. All told, the combination of soft and hard skills learned from my time at SNHU have prepared me for a career in computer science. 
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
-
-### Markdown
-
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
-
-```markdown
-Syntax highlighted code block
-
-# Header 1
-## Header 2
-### Header 3
-
-- Bulleted
-- List
-
-1. Numbered
-2. List
-
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
-```
-
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
-
-### Jekyll Themes
-
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/adilpeerbhoy/adilpeerbhoy.github.io/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
-
-### Support or Contact
-
-Having trouble with Pages? Check out our [documentation](https://help.github.com/categories/github-pages-basics/) or [contact support](https://github.com/contact) and we’ll help you sort it out.
+There are two artifacts present in this ePortfolio, both of which demonstrates a different but important aspect of computer science. The first artifact is a local user authentication program written in Python that uses JSON to store and use data. This artifact demonstrates not only knowledge in the programming language, but also the underlying data structure and algorithms involved. The program has to not only function as intended, but should be robust enough to handle exceptions thrown at it by the user, which is demonstrated in the program. The second artifact is simple web application that takes data from a collection in MongoDB and displays it to a webpage. The use of MongoDB, Express, and Node.js allow for the user to see and interact with the database. Together these artifacts represent experience with software engineering/design, data structures and algorithms, and databases. Each artifact includes a written assessment about it, including details about the development and the challenges that were faced during its creation.  
