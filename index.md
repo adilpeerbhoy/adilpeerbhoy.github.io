@@ -19,7 +19,7 @@ In order to meet the course requirements, the artifact had to successfully be co
 
 There were a few challenges when completing this artifact enhancement. The primary struggle was with creating the login system to be as robust as possible. Simply using a singular while or for loop would not be enough to keep track of all the possible outcomes that might be encountered by the user. I had to learn to incorporate some Python-specific data structures (try and except) along with nested while loops and IF statements in order for the user to interact with the login system. This way, the user could be limited to three unsuccessful attempts, and any successful attempt did not end up causing the program to loop back to the beginning at any point. The next major struggle was using the JSON formatted file for the user credentials. I had a hard time figuring out a way to link a specific username to the corresponding password. Since both the username and password were their own key-value pairs, and both key-value pairs were part of a single object amongst an array of object, it was hard to isolate. The solution came from creating a new key-value structure with an object’s username’s value as a new key, and the same object’s password’s value as the new value. This way, both the username value and password values for a single object were linked, and could be easily accessed in the main program. The inclusion of an MD5 hash from the Java version was also implemented here, so a user could type in a normal string password, the password would be hashed, and that hashed value was compared against the value stored in the new key-value pairs created. By implementing the system in this manner, I was able to take advantage of JSON formatting for structure and simplicity while still keeping the integrity of the data. What began as a seemingly simple rewrite into Python became a more complex undertaking that ultimately was quite rewarding. I had not used JSON quite as much previously, so I had to seek a lot of help online with using and accessing data in JSON formatted files. And while I have more Python experience by comparison to Java, it had still been a while since I used it as extensively as I did for this enhancement. I do feel like I’ve learned quite a bit about both program types and how to better approach programming and data structures. 
 
-**Main Python Program
+Main Python Program
 '''
 '''
 The is a local user authentication program for a zoo.
@@ -34,8 +34,8 @@ the password provided by the user and to work with json files
 import json
 import hashlib
 
-# This opens a json file containing the available credentials and roles
-# for each user
+This opens a json file containing the available credentials and roles
+for each user
 with open('./credentials.json') as f:
     data = json.load(f)
 
@@ -114,14 +114,14 @@ def zoo_authentication():
             if resp.upper() == 'N':
                 quit = True
 
-# This allows the .py function to be called from the terminal window
+ This allows the .py function to be called from the terminal window
 
 if __name__ == '__main__':
     zoo_authentication()
 
 '''
 
-**Credentials JSON file contents
+Credentials JSON file contents
 '''
 {
   "users": [
@@ -195,10 +195,4 @@ if __name__ == '__main__':
       }
     ]
 }
-
-
-
-     
-
-
 '''
