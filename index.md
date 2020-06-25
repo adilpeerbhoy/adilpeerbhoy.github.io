@@ -786,6 +786,14 @@ Maintenance Logs File
 }
 ```
 
-     
+## Artifact Two - Database and Simple Web Hosting
+
+The artifact used in this enhancement is a nearly full-stack application. It uses MongoDB to host a collection of stock data and Express and Node.js to host a webpage to display the results. The original artifact was simply the MongoDB database and collection along with some CRUD commands, but all the information displayed was in a terminal window. The original artifact was created in the CS 340 course. The enhancement provides a nicer way to view the information.
+
+The inclusion of this artifact into the ePortfolio is two-fold. The first and obvious reason is that it fit the requirements for the class. While this was not the only project that could serve as a ‘database’ enhancement, it was one that I had worked on most recently and was the most complex project in comparison. The second reason for its inclusion is that it felt like a good project to showcase on a portfolio. Since the work done in the CS 340 course led to understanding both databases and the REST API, I felt like this would be a great skillset to showcase. By enhancing the project further and providing a webpage that would display the information, not only would I gain new skills but I would also create a more robust and meaningful project. The artifact was improved by using more software to create a webpage application that would display information from the database. 
+
+After completing the enhancement, I was able to successfully complete the course objective. This enhancement required more research on my end to figure out how to use a couple of new pieces of software. Rather than solely relying on my previous knowledge and skillset (as in the previous enhancements), I had to pretty much learn brand new things for this one. I struggled mostly with displaying the information on the webpage, as I was not familiar with HTML and therefore had to spend some time trying to figure that out. Throughout the process, I gained a better appreciation for web development and the steps required to create a successful site.
+
+
 
 
