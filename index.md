@@ -794,6 +794,121 @@ The inclusion of this artifact into the ePortfolio is two-fold. The first and ob
 
 After completing the enhancement, I was able to successfully complete the course objective. This enhancement required more research on my end to figure out how to use a couple of new pieces of software. Rather than solely relying on my previous knowledge and skillset (as in the previous enhancements), I had to pretty much learn brand new things for this one. I struggled mostly with displaying the information on the webpage, as I was not familiar with HTML and therefore had to spend some time trying to figure that out. Throughout the process, I gained a better appreciation for web development and the steps required to create a successful site.
 
+Main app.js file
+```
+var createError = require('http-errors');
+var express = require('express');
+var path = require('path');
+var cookieParser = require('cookie-parser');
+var logger = require('morgan');
+
+// New code
+var monk = require('monk');
+var db = monk('localhost:27017/marketstock');
+
+var indexRouter = require('./routes/index');
+var usersRouter = require('./routes/users');
+
+var app = express();
+
+// view engine setup
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'ejs');
+
+app.use(logger('dev'));
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+app.use(cookieParser());
+app.use(express.static(path.join(__dirname, 'public')));
+
+// Make our db accessible to our router
+app.use(function (req, res, next) {
+    req.db = db;
+    next();
+});
+
+app.use('/', indexRouter);
+app.use('/users', usersRouter);
+
+// catch 404 and forward to error handler
+app.use(function(req, res, next) {
+  next(createError(404));
+});
+
+// error handler
+app.use(function(err, req, res, next) {
+  // set locals, only providing error in development
+  res.locals.message = err.message;
+  res.locals.error = req.app.get('env') === 'development' ? err : {};
+
+  // render the error page
+  res.status(err.status || 500);
+  res.render('error');
+});
+
+module.exports = app;
+```
+Express index.js File
+```
+var express = require('express');
+var router = express.Router();
+
+/* GET home page. */
+router.get('/', function(req, res, next) {
+  res.render('index', { title: 'Express' });
+});
+
+/*GET stockdata page. */
+router.get('/stockdata', function (req, res) {
+    var db = req.db;
+    var collection = db.get('stockdata');
+    collection.find({}, function (e, docs) {
+        //console.log(docs[0])
+        res.render('stockdata', {
+            "stockdata": docs
+        });
+    });
+});
+
+module.exports = router;
+```
+Node.js / HTML display File
+```
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Stock Data</title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <body>
+    <h1>Stock Data</h1>
+    <ul>
+      <%
+        var data = '';
+        for (i = 0; i < stockdata.length; i++) {
+          data += '<li>Ticker: '+stockdata[i].Ticker+'</li>';
+          data += '<li>Sector: '+stockdata[i].Sector+'</li>';
+          data += '<li>Performance (YTD): '+stockdata[i]['Performance (YTD)']+'</li>';
+          data += '<li>Industry: '+stockdata[i].Industry+'</li>';
+          data += '<li>Company: '+stockdata[i].Company+'</li>';
+          data += '<li>Volume: '+stockdata[i].Volume+'</li>';
+          data += '<br>';
+        }
+      %>
+      <%- data %>
+       <% var a = "a"; %>
+     
+          <script>
+            var stocks = <%= a %>;
+            console.log(stocks)
+          </script>
+    
+      
+    </ul>
+  </body>
+</html>
+```
+
 
 
 
