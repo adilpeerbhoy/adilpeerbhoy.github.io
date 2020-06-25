@@ -7,3 +7,4 @@ There are two artifacts present in this ePortfolio, both of which demonstrates a
 ## Code Review
 
 Below is an initial code review of the artifacts present in the portfolio before they were enhanced. It summarizes the artifacts and the work that will be done in order to enhance it.
+https://www.youtube.com/watch?v=yrI8WdJ-8lU
