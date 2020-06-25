@@ -9,7 +9,9 @@ There are two artifacts present in this ePortfolio, both of which demonstrates a
 Below is an initial code review of the artifacts present in the portfolio before they were enhanced. It summarizes the artifacts and the work that will be done in order to enhance it.
 (https://www.youtube.com/watch?v=yrI8WdJ-8lU)
 
-## Artifact One - User Authentication Program
+## Artifact One - User Authentication Program (First Enhancement)
+
+This artifact underwent two enhancements, one which changed the original program language and the other which added complexity. They are here one after the other.
 
 The artifact in this milestone is a local user authentication program. It is written for an imaginary City Zoo and is coded in Java. The program allows for a user to log in with a specific username and password, and only upon successful authentication of both items does the user gain access to the system. Additionally, only certain pieces of information are available for viewing by the user based on their role in the system. As system admin has the highest clearance and can see certain items, while the veterinarian and zookeeper can see certain other things respectively. This artifact was originally created in the 18EW2 term for the IT 145 class. 
 
@@ -195,3 +197,595 @@ Credentials JSON file contents
     ]
 }
 ```
+
+## Artifact One - User Authentication Program (Second Enhancement)
+
+The artifact in this milestone is a local user authentication program. It is written for an imaginary City Zoo and is coded in Java originally (in Python after the first enhancement as part of Milestone Two). The program allows for a user to log in with a specific username and password, and only upon successful authentication of both items does the user gain access to the system. Additionally, only certain pieces of information are available for viewing by the user based on their role in the system. As system admin has the highest clearance and can see certain items, while the veterinarian and zookeeper can see certain other things respectively. This artifact was originally created in the 18EW2 term for the IT 145 class. 
+
+This artifact was included for a couple of reasons. The first reason is that I had recently enhanced this artifact in the previous milestone. I didn’t just want to leave it the way it was, and if there was a way to enhance it further by making it more efficient or adding complexity then it would be an even better program to showcase my abilities. As the ultimate goal of the class is to create an ePortfolio, the better my work is, the better it will showcase on the portfolio to potential employers and/or recruiters. This artifact showcases my knowledge not only of the Python program but of data structures as well. The use of different functions and internal loop structures is a great example of a simple yet efficient program that is commonly found in the real world. While many user authentication systems are web-based, having a local system mimics many of the same features. This makes understanding this type of program important. A second reason for choosing this artifact is that it fit nicely into the class requirements. This artifact is one of the most complete code-driven projects I’ve completed so far, so it is a great candidate for ‘expanding complexity’.
+
+In order to meet the course requirements, the artifact had to be more useful than the original enhancement. In both the original Java version and the enhanced Python one, once the user successfully logs into the system, there is little for the user to do. A simple message is displayed to the user describing what types of information that user has access to, and what they might be able to do once logged in. However, nothing of that sort was included. In order to expand on the program’s complexity, I had to create new data and files for each user to interact with. The system administrator had to be able to see all the staff members, for example. The vet and zookeepers needed to see information on the animals in the zoo, which required this data to first be created and then made accessible to these users. Since the users would also like to be able to perform more than a single action once logged in, they needed to be able to choose from a menu of options and be able to return to that menu after completing that task. Last, the user had to be able to logout and return to the main login page for the zoo system. Adding all three of these components (new data, user access to data, and inclusion of menu system prompts) all make the program more robust and useful. The planned enhancements outlined in Milestone One have been met successfully with this milestone.
+
+There were a few challenges when completing this artifact enhancement. The first item that was coded for increased complexity was the creation of new data entries for the users to access. This meant creating four new JSON formatted files – staff, animals, medical, and logs. The staff file was a rehash of the original credentials file used in the main authentication system, but without password information and an added staff_id field. The animals file contained names and animal-types for all the animals that would be used in the system (11 animals total). Each have a unique animal_id, which is used in both the medical and logs files to reference this animals’ file. The medial file contains a short medical history, illness, treatment, and vaccination log for each animal. The logs file contains habitat condition, food preference, and general welfare for each animal. Configuring each of these files was made easy by using online JSON generators to convert text to JSON format. The next item was creating a menu to access the content for each user. Since I have previous experience in creating a simple menu, the implementation in this case was not difficult. Each user is prompted to choose an option on a menu, one of which is the option to logout of the program. If a user enters a value outside those designated in the menu, or if a string is entered, the user is prompted to try again (no attempt restrictions). This used the try/except structure along with while loops and if statements in order to make the menu robust. The last part was the most difficult, which was getting the data read in by the program. Similar to the main authentication program, each of the objects in the JSON files I was working with contained multiple key-value pairs for every object. While I was able to get all the objects printed at once, I was unable to get specific objects to display based upon certain criteria. If a user wanted to just see the medical record for one animal as an example, I wasn’t able to make that happen. As it stands, each user can see all the data that they have access to, but no way to filter the results. The previous implementation of JSON files, where new dictionaries of key-value pairs are created, did not work in this situation. Not only was more information involved, but the entire object’s key-value pairs needed to be printed to the screen, not just one or two of them. Adding this level of complexity would certainly make the program even better and more useful, but I was unable to complete this at the current time. I do plan to work on this on my own outside of the course in order to improve my own skills and knowledge. While I had learned a fair amount about JSON from the last enhancement, it was not quite enough here to make the program the best it could be. Working on this enhancement showed me how complex these types of systems can be, and allowed me to gain a greater appreciation of them. While I was unable to make the full implementations, I still did learn quite a bit about JSON anyway, which will only serve me well in my career.  
+
+Main Python Program
+```
+'''
+The is a local user authentication program for a zoo.
+The program has the user provide a username and password
+and checks those credentials to a file loaded in by the program.
+If the credentials match, then the relevant information is
+presented to the user based on their role.
+
+First some libraries are imported that help with hashing
+the password provided by the user and to work with json files
+'''
+import json
+import hashlib
+
+# This opens a json file containing the available credentials and roles
+# for each user
+with open('./credentials.json') as f:
+    data = json.load(f)
+
+'''
+Here we are redefining the data in the json file so that the usernames
+become keys and hashed passwords become values in a dictionary format.
+We are also creating a dictionary for the user role in order to allow 
+only certain information from being seen by the user.    
+'''
+auth = {}
+groups = {}
+for user in data['users']:
+    auth[user['username']] = {'hash' : user['hash'], 'id' : user['id']}
+
+for role in data['roles']:
+    groups[role['user_id']] = {'role' : role['role'], 'id' : role['id']}
+
+'''
+These functions are what the user will see upon successful login based on 
+their role. The user will be able to make a choice from a menu of options.
+These include viewing all the data available to them and logging out to the 
+main menu. More features can be added based on the type of information
+each user would like to access most often. Data is stored in json files outside
+the main program and are opened within their respective functions.
+'''
+def admin():
+    print()
+    print('Hello, System Admin!')
+    print('As administrator, you have access to the zoo\'\s main computer system')
+    print('This allows you to monitor users in the system and their roles.')
+    print()
+    print('1 - View Entire Staff')
+    print('2 - Logout')
+    print()
+
+    with open('./staff.json') as f:
+        data = json.load(f)
+
+    while True:
+        try:
+            admin_select = int(input('Please select an option to continue (1-2): '))
+            if admin_select == 1:
+                print(json.dumps(data['staff'], indent=2))
+                anykey=input("Enter anything to return to main menu")
+                admin()
+            if admin_select == 2:
+                print()
+                print()
+                zoo_authentication()
+        except ValueError:
+            print("Invalid choice. Enter 1-2")
+    exit
+
+def veterinarian():
+    print()
+    print('Hello, Veterinarian!')
+    print('As veterinarian, you have access to all of the animals\'\ health records')
+    print('This allows you to view each animal\'\s medical history and current treatments/illnesses (if any), and to maintain a vaccination log.')
+    print()
+    print('1 - View all Animals')
+    print('2 - View all Medical Reports')
+    print('3 - Logout')
+    print()
+
+    with open('./animals.json') as f:
+        animals = json.load(f)
+
+    with open('./medical.json') as file:
+        medicals = json.load(file)
+
+    while True:
+        try:
+            vet_select = int(input('Please select an option to continue (1-3): '))
+            if vet_select == 1:
+                print(json.dumps(animals['animal'], indent=2))
+                anykey=input("Enter anything to return to main menu")
+                veterinarian()
+            if vet_select == 2:
+                print(json.dumps(medicals['record'], indent=2))
+                anykey=input("Enter anything to return to main menu")
+                veterinarian()
+            if vet_select == 3:
+                print()
+                print()
+                zoo_authentication()
+        except ValueError:
+            print("Invalid choice. Enter 1-3")
+    exit
+
+def zookeeper():
+    print('Hello, Zookeeper!')
+    print('As zookeeper, you have access to all of the animals\'\ information and their daily monitoring logs.')
+    print('This allows you to track their feeding habits, habitat conditions, and general welfare.')
+    print()
+    print('1 - View all Animals')
+    print('2 - View Monitoring Logs')
+    print('3 - Logout')
+    print()
+
+    with open('./animals.json') as f:
+        animals = json.load(f)
+    
+    with open('./logs.json') as file2:
+        logs = json.load(file2)
+
+    while True:
+        try:
+            zoo_select = int(input('Please select an option to continue (1-3): '))
+            if zoo_select == 1:
+                print(json.dumps(animals['animal'], indent=2))
+                anykey=input("Enter anything to return to main menu")
+                zookeeper()
+            if zoo_select == 2:
+                print(json.dumps(logs['log'], indent=2))
+                anykey=input("Enter anything to return to main menu")
+                zookeeper()
+            if zoo_select == 3:
+                print()
+                print()
+                zoo_authentication()
+        except ValueError:
+            print("Invalid choice. Enter 1-3")
+    exit
+
+'''
+The main function. After greeting the user, asks for username and password (non-hashed).
+Once the password is typed, it is hashed by the hexdigest function (performs MD5 hash).
+Once hashed, the hashed password is compared to those stored on file. The user is allowed
+to make three attempts to login before being booted out. After an unsuccessful attempt, the
+user is asked if they would like to try again. If they select yes, they go back to the main menu.
+If they choose not to retry, the program closes.
+ '''
+def zoo_authentication():
+    attempts = 0
+    quit = False
+    while not quit:
+        print('Hello, Welcome to the Zoo!')
+        username = input('Enter Username: ')
+        password = input('Enter Password: ')
+        hash = hashlib.md5(password.encode())
+        if hash.hexdigest() == auth[username]['hash']:
+            print('Login Successful')
+            role = groups[str(auth[username]['id'])]['role']
+            if role == 'admin':
+                admin()
+                #return 0
+            elif role == 'veterinarian':
+                veterinarian()
+                #return 0
+            elif role == 'zookeeper':
+                zookeeper()
+                #return 0
+            else:
+                print('Role Not Found')
+        else:
+            attempts = attempts + 1
+            resp = None
+            while (resp != 'Y' and resp != 'N') and attempts < 3:
+                resp = input('Authentication Failed! Would you like to try again (Y/N)? ')
+            if attempts >= 3:
+                print('Too many attempts - Goodbye')
+                quit = True
+            if resp.upper() == 'N':
+                quit = True
+
+# This allows the .py function to be called from the terminal window
+
+if __name__ == '__main__':
+    zoo_authentication()
+```
+
+Staff JSON File
+```
+{
+  "staff": [
+    {
+      "id": "1",
+      "staff_id": "101",
+      "first_name": "Griffin",
+      "last_name": "Keyes",
+      "role": "zookeeper"
+    },
+    {
+      "id": "2",
+      "staff_id": "102",
+      "first_name": "Rosario",
+      "last_name": "Dawson",
+      "role": "admin"
+    },
+    {
+      "id": "3",
+      "staff_id": "103",
+      "first_name": "Bernie",
+      "last_name": "Gorilla",
+      "role": "veterinarian"
+    },
+    {
+      "id": "4",
+      "staff_id": "104",
+      "first_name": "Donald",
+      "last_name": "Monkey",
+      "role": "zookeeper"
+    },
+    {
+      "id": "5",
+      "staff_id": "105",
+      "first_name": "Jerome",
+      "last_name": "Grizzlybear",
+      "role": "veterinarian"
+    },
+    {
+      "id": "6",
+      "staff_id": "106",
+      "first_name": "Bruce",
+      "last_name": "Grizzlybear",
+      "role": "admin"
+    }
+  ]
+}
+```
+Animals JSON File
+```
+{
+  "animal": [
+    {
+      "id": "1",
+      "animal_id": "1",
+      "first_name": "Alex",
+      "type": "lion"
+    },
+    {
+      "id": "2",
+      "animal_id": "2",
+      "first_name": "Marty",
+      "type": "zebra"
+    },
+    {
+      "id": "3",
+      "animal_id": "3",
+      "first_name": "Gloria",
+      "type": "hippo"
+    },
+    {
+      "id": "4",
+      "animal_id": "4",
+      "first_name": "Melman",
+      "type": "giraffe"
+    },
+    {
+      "id": "5",
+      "animal_id": "5",
+      "first_name": "Skipper",
+      "type": "penguin"
+    },
+    {
+      "id": "6",
+      "animal_id": "6",
+      "first_name": "Kowalski",
+      "type": "penguin"
+    },
+    {
+      "id": "7",
+      "animal_id": "7",
+      "first_name": "Rico",
+      "type": "penguin"
+    },
+    {
+      "id": "8",
+      "animal_id": "8",
+      "first_name": "Private",
+      "type": "penguin"
+    },
+    {
+      "id": "9",
+      "animal_id": "9",
+      "first_name": "Julian",
+      "type": "lemur"
+    },
+    {
+      "id": "10",
+      "animal_id": "10",
+      "first_name": "Maurice",
+      "type": "lemur"
+    },
+    {
+      "id": "11",
+      "animal_id": "11",
+      "first_name": "Mort",
+      "type": "lemur"
+    }
+  ]
+}
+```
+Medical Records JSON File
+```
+{
+  "record": [
+    {
+      "id": "1",
+      "animal_id": "1",
+      "history": {
+        "gender": "male",
+        "health": "good",
+        "allergies": "none"
+      },
+      "illness": "egoism",
+      "treatment": "none available",
+      "vaccination_log": [
+        "06/2020",
+        "10/2018",
+        "02/2017"
+      ]
+    },
+    {
+      "id": "2",
+      "animal_id": "2",
+      "history": {
+        "gender": "male",
+        "health": "good",
+        "allergies": "none"
+      },
+      "illness": "naivety",
+      "treatment": "none available",
+      "vaccination_log": [
+        "03/2020",
+        "12/2019",
+        "04/2017"
+      ]
+    },
+    {
+      "id": "3",
+      "animal_id": "3",
+      "history": {
+        "gender": "female",
+        "health": "good",
+        "allergies": "none"
+      },
+      "illness": "none",
+      "treatment": "N/A",
+      "vaccination_log": [
+        "06/2019",
+        "11/2018",
+        "07/2017"
+      ]
+    },
+    {
+      "id": "4",
+      "animal_id": "4",
+      "history": {
+        "gender": "male",
+        "health": "good",
+        "allergies": "many"
+      },
+      "illness": "paranoia",
+      "treatment": "none available",
+      "vaccination_log": [
+        "05/2020",
+        "4/2019",
+        "02/2018"
+      ]
+    },
+    {
+      "id": "5",
+      "animal_id": "5",
+      "history": {
+        "gender": "male",
+        "health": "good",
+        "allergies": "none"
+      },
+      "illness": "N/A",
+      "treatment": "N/A",
+      "vaccination_log": [
+        "05/2020",
+        "04/2019",
+        "06/2018"
+      ]
+    },
+    {
+      "id": "6",
+      "animal_id": "6",
+      "history": {
+        "gender": "male",
+        "health": "good",
+        "allergies": "none"
+      },
+      "illness": "N/A",
+      "treatment": "N/A",
+      "vaccination_log": [
+        "05/2020",
+        "04/2019",
+        "06/2018"
+      ]
+    },
+    {
+      "id": "7",
+      "animal_id": "7",
+      "history": {
+        "gender": "male",
+        "health": "good",
+        "allergies": "none"
+      },
+      "illness": "N/A",
+      "treatment": "N/A",
+      "vaccination_log": [
+        "05/2020",
+        "04/2019",
+        "06/2018"
+      ]
+    },
+    {
+      "id": "8",
+      "animal_id": "8",
+      "history": {
+        "gender": "male",
+        "health": "good",
+        "allergies": "none"
+      },
+      "illness": "N/A",
+      "treatment": "N/A",
+      "vaccination_log": [
+        "05/2020",
+        "04/2019",
+        "06/2018"
+      ]
+    },
+    {
+      "id": "9",
+      "animal_id": "9",
+      "history": {
+        "gender": "male",
+        "health": "good",
+        "allergies": "none"
+      },
+      "illness": "egoism",
+      "treatment": "none available",
+      "vaccination_log": [
+        "08/2020",
+        "06/2018",
+        "01/2016"
+      ]
+    },
+    {
+      "id": "10",
+      "animal_id": "10",
+      "history": {
+        "gender": "male",
+        "health": "good",
+        "allergies": "none"
+      },
+      "illness": "N/A",
+      "treatment": "N/A",
+      "vaccination_log": [
+        "12/2019",
+        "04/2018",
+        "06/2017"
+      ]
+    },
+    {
+      "id": "11",
+      "animal_id": "11",
+      "history": {
+        "gender": "male",
+        "health": "good",
+        "allergies": "none"
+      },
+      "illness": "N/A",
+      "treatment": "N/A",
+      "vaccination_log": [
+        "05/2020",
+        "04/2019",
+        "06/2018"
+      ]
+    }
+  ]
+}
+```
+Maintenance Logs File
+```
+{
+  "log": [
+    {
+      "id": "1",
+      "animal_id": "1",
+      "food": "raw steak",
+      "habitat_condition": "good",
+      "welfare": "happy"
+    },
+    {
+      "id": "2",
+      "animal_id": "2",
+      "food": "grass bed",
+      "habitat_condition": "low on hay",
+      "welfare": "unsatisfied"
+    },
+    {
+      "id": "3",
+      "animal_id": "3",
+      "food": "fresh fruits",
+      "habitat_condition": "good",
+      "welfare": "happy"
+    },
+    {
+      "id": "4",
+      "animal_id": "4",
+      "food": "medicine",
+      "habitat_condition": "excellent",
+      "welfare": "anxious"
+    },
+    {
+      "id": "5",
+      "animal_id": "5",
+      "food": "fish",
+      "habitat_condition": "good",
+      "welfare": "restless"
+    },
+    {
+      "id": "6",
+      "animal_id": "6",
+      "food": "fish",
+      "habitat_condition": "good",
+      "welfare": "restless"
+    },
+    {
+      "id": "7",
+      "animal_id": "7",
+      "food": "fish",
+      "habitat_condition": "good",
+      "welfare": "restless"
+    },
+    {
+      "id": "8",
+      "animal_id": "8",
+      "food": "fish",
+      "habitat_condition": "good",
+      "welfare": "restless"
+    },
+    {
+      "id": "9",
+      "animal_id": "9",
+      "food": "fresh fruit",
+      "habitat_condition": "good",
+      "welfare": "content"
+    },
+    {
+      "id": "10",
+      "animal_id": "10",
+      "food": "fresh fruit",
+      "habitat_condition": "good",
+      "welfare": "tired"
+    },
+    {
+      "id": "11",
+      "animal_id": "11",
+      "food": "fresh fruit",
+      "habitat_condition": "good",
+      "welfare": "hyperactive"
+    }
+  ]
+}
+```
+
+     
+
+
