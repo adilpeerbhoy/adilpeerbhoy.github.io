@@ -21,30 +21,29 @@ There were a few challenges when completing this artifact enhancement. The prima
 
 Main Python Program
 '''
-'''
-The is a local user authentication program for a zoo.
-The program has the user provide a username and password
-and checks those credentials to a file loaded in by the program.
-If the credentials match, then the relevant information is
-presented to the user based on their role.
+//The is a local user authentication program for a zoo.
+//The program has the user provide a username and password
+//and checks those credentials to a file loaded in by the program.
+//If the credentials match, then the relevant information is
+//presented to the user based on their role.
 
-First some libraries are imported that help with hashing
-the password provided by the user and to work with json files
-'''
+//First some libraries are imported that help with hashing
+//the password provided by the user and to work with json files
+
 import json
 import hashlib
 
-This opens a json file containing the available credentials and roles
-for each user
+//This opens a json file containing the available credentials and roles
+//for each user
 with open('./credentials.json') as f:
     data = json.load(f)
 
-'''
-Here we are redefining the data in the json file so that the usernames
-become keys and hashed passwords become values in a dictionary format.
-We are also creating a dictionary for the user role in order to allow 
-only certain information from being seen by the user.    
-'''
+
+//Here we are redefining the data in the json file so that the usernames
+//become keys and hashed passwords become values in a dictionary format.
+//We are also creating a dictionary for the user role in order to allow 
+//only certain information from being seen by the user.    
+
 auth = {}
 groups = {}
 for user in data['users']:
@@ -53,11 +52,11 @@ for user in data['users']:
 for role in data['roles']:
     groups[role['user_id']] = {'role' : role['role'], 'id' : role['id']}
 
-'''
-These functions are what the user will see upon successful login based on 
-their role. Currently is just a few sentences about the role, but can be 
-configured to have more information/menus.
-'''
+
+//These functions are what the user will see upon successful login based on 
+//their role. Currently is just a few sentences about the role, but can be 
+//configured to have more information/menus.
+
 def admin():
     print('Hello, System Admin!')
     print('As administrator, you have access to the zoo\'\s main computer system')
@@ -73,14 +72,14 @@ def zookeeper():
     print('As zookeeper, you have access to all of the animals\'\ information and their daily monitoring logs.')
     print('This allows you to track their feeding habits, habitat conditions, and general welfare.')
 
-'''
-The main function. After greeting the user, asks for username and password (non-hashed).
-Once the password is typed, it is hashed by the hexdigest function (performs MD5 hash).
-Once hashed, the hashed password is compared to those stored on file. The user is allowed
-to make three attempts to login before being booted out. After an unsuccessful attempt, the
-user is asked if they would like to try again. If they select yes, they go back to the main menu.
-If they choose not to retry, the program closes.
- '''
+
+//The main function. After greeting the user, asks for username and password (non-hashed).
+//Once the password is typed, it is hashed by the hexdigest function (performs MD5 hash).
+//Once hashed, the hashed password is compared to those stored on file. The user is allowed
+//to make three attempts to login before being booted out. After an unsuccessful attempt, the
+//user is asked if they would like to try again. If they select yes, they go back to the main menu.
+//If they choose not to retry, the program closes.
+
 def zoo_authentication():
     attempts = 0
     quit = False
@@ -114,12 +113,12 @@ def zoo_authentication():
             if resp.upper() == 'N':
                 quit = True
 
- This allows the .py function to be called from the terminal window
+//This allows the .py function to be called from the terminal window
 
 if __name__ == '__main__':
     zoo_authentication()
-
 '''
+
 
 Credentials JSON file contents
 '''
